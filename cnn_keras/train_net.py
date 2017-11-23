@@ -12,7 +12,7 @@ class seq_net:
     def __init__(self):
         print('Initializing CNN')
 
-    def load_model(self, img_width = 150, img_height = 150, train_data_dir = 'img_data/train', validation_data_dir = 'img_data/validation', weight_location = 'cnn_keras/first_try.h5'):
+    def load_model(self, img_width = 150, img_height = 150, train_data_dir = 'img_data/train', validation_data_dir = 'img_data/validation', weight_location = 'cnn_keras/model_weights.h5', model_location = 'cnn_keras/model.h5'):
         print('loading_imgs')
 
         # dimensions of our images.
@@ -21,6 +21,7 @@ class seq_net:
         self.train_data_dir = train_data_dir
         self.validation_data_dir = validation_data_dir
         self.weight_location = weight_location
+        self.model_location = model_location
 
     def retrain(self, epochs = 50, batch_size = 16, nb_train_samples = 2000, nb_validation_samples = 800):
 
@@ -88,6 +89,7 @@ class seq_net:
             validation_steps=nb_validation_samples // batch_size)
 
         model.save_weights(self.weight_location)
+        model.save(self.model_location)
 
         return model, class_dictionary
 

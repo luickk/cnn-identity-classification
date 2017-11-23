@@ -9,7 +9,7 @@ from cnn_tens import train_net as tens_train_net
 from cnn_tens import label_pic as tens_label_pic
 
 from cnn_keras import train_net as keras_train_net
-from cnn_keras import train_net_VGG16 as keras_train_net_v2
+from cnn_keras import label_pic as keras_label_pic
 
 def main():
     imagePath = sys.argv[1]
@@ -27,18 +27,15 @@ def main():
     #output_graph, output_labels = tens_net.load_model("img_data/train", "cnn_tens/validation_save", "cnn_tens/tmp/bottleneck", "final_result", "final_result", 10, 10, 0.01, 50, 100, 10, 100, "cnn_tens/tmp/output_graph.pb", "cnn_tens/tmp/output_labels.txt")
     #tens_net.retrain()
 
-    #net_keras = keras_train_net.seq_net()
-    #net_keras.load_model(150, 150, 'img_data/train', 'img_data/validation', weight_location = 'cnn_keras/first_try.h5')
-    #model, class_dictionary = net_keras.retrain(50, 16, 2000, 800)
-    #print(class_dictionary)
-    #print(net_keras.label(model, 'img_data/test/3.jpg'))
-
-
-    net_keras_v2 = keras_train_net_v2.seq_net()
-    net_keras_v2.load_model(150, 150, 'img_data/train', 'img_data/validation', weight_location = 'cnn_keras/first_try.h5')
-    model, class_dictionary = net_keras_v2.retrain(50, 16, 42, 42)
+    net_keras = keras_train_net.seq_net()
+    net_keras.load_model(150, 150, 'img_data/train', 'img_data/validation', weight_location = 'cnn_keras/models/model_weights.h5', model_location = 'cnn_keras/models/model.h5')
+    model, class_dictionary = net_keras.retrain(50, 16, 2000, 800)
     print(class_dictionary)
-    print(net_keras_v2.label(model, 'img_data/test/3.jpg'))
+    test_img = 'img_data/test/7.jpg'
+    pred, class_dictionary = keras_label_pic.label_pic(img_path = test_img, model_path = 'cnn_keras/models/model.h5', model_weights_path = 'cnn_keras/models/model_weights.h5', img_width = 150, img_height = 150)
+
+    print(pred+'+++'+class_dictionary)
+
 
 if __name__ == "__main__":
     main()
