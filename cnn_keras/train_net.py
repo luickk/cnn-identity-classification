@@ -3,7 +3,10 @@ from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D
 from keras.layers import Activation, Dropout, Flatten, Dense
 from keras import backend as K
+import uuid
 import numpy as np
+import os
+import json
 
 from PIL import Image as pil
 
@@ -12,7 +15,7 @@ class seq_net:
     def __init__(self):
         print('Initializing CNN')
 
-    def load_model(self, img_width = 150, img_height = 150, train_data_dir = 'img_data/train', validation_data_dir = 'img_data/validation', weight_location = 'cnn_keras/model_weights.h5', model_location = 'cnn_keras/model.h5'):
+    def load_model(self, img_width = 150, img_height = 150, train_data_dir = 'img_data/train', validation_data_dir = 'img_data/validation', model_directory = 'cnn_keras/models'):
         print('loading_imgs')
 
         # dimensions of our images.
@@ -20,8 +23,7 @@ class seq_net:
         self.img_height = img_height
         self.train_data_dir = train_data_dir
         self.validation_data_dir = validation_data_dir
-        self.weight_location = weight_location
-        self.model_location = model_location
+        self.model_directory = model_directory
 
     def retrain(self, epochs = 50, batch_size = 16, nb_train_samples = 2000, nb_validation_samples = 800):
 
@@ -88,19 +90,16 @@ class seq_net:
             validation_data=validation_generator,
             validation_steps=nb_validation_samples // batch_size)
 
-        model.save_weights(self.weight_location)
-        model.save(self.model_location)
+        model_directory_path = self.model_directory + '/' + str(uuid.uuid1())
+
+        if not os.path.exists(model_directory_path):
+            os.makedirs(model_directory_path)
+
+        model.save_weights(model_directory_path+'/model_weights.h5')
+        model.save(model_directory_path+'/model.h5')
+
+        class_indices_file = open(model_directory_path+'/class_indices_file.txt','w')
+        class_indices_file.write(str(class_dictionary))
+        class_indices_file.close()
 
         return model, class_dictionary
-
-    def label(self, model, img_path):
-        img_pil = pil.open(img_path)
-        img_pil = img_pil.resize((self.img_width, self.img_height))
-        img_as_array = img_to_array(img_pil)
-        return model.predict_classes(img_as_array)
-
-def img_to_array(img):
-    x = np.asarray(img, dtype=K.floatx())
-    #expand dim for Keras net
-    x = np.expand_dims(x / 255, axis=0)
-    return x
