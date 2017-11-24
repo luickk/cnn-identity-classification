@@ -1,6 +1,8 @@
 Face Recognition and detection
 ===================
 
+![alt text](https://s3.amazonaws.com/keras.io/img/keras-logo-2018-large-1200.png)
+
 The python program detects and recognizes faces by using opencv to detect faces and a in Keras built CNN to recognize them.
 
 ----------
