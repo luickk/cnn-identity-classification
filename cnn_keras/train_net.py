@@ -90,7 +90,9 @@ class seq_net:
             validation_data=validation_generator,
             validation_steps=nb_validation_samples // batch_size)
 
-        model_directory_path = self.model_directory + '/' + str(uuid.uuid1())
+        model_uuid = str(uuid.uuid1())
+
+        model_directory_path = self.model_directory + '/' + model_uuid
 
         if not os.path.exists(model_directory_path):
             os.makedirs(model_directory_path)
@@ -102,4 +104,4 @@ class seq_net:
         class_indices_file.write(str(class_dictionary))
         class_indices_file.close()
 
-        return model, class_dictionary
+        return model, class_dictionary, model_uuid

@@ -25,14 +25,12 @@ def main():
 
     net_keras = keras_train_net.seq_net()
     net_keras.load_model(img_width = 150, img_height = 150, train_data_dir = 'img_data/train', validation_data_dir = 'img_data/validation', model_directory = 'cnn_keras/models')
-    model, class_dictionary = net_keras.retrain(epochs = 50, batch_size = 16, nb_train_samples = 2000, nb_validation_samples = 800)
+    model, class_dictionary, model_directory = net_keras.retrain(epochs = 50, batch_size = 16, nb_train_samples = 2000, nb_validation_samples = 800)
 
+    pred, class_dictionary = keras_label_pic.label_pic(img_path = imagePath, img_width = 150, img_height = 150, model_id = model_directory, model_directory = 'cnn_keras/models')
+
+    print(pred)
     print(class_dictionary)
-    test_img = 'img_data/test/7.jpg'
-
-    pred, class_dictionary = keras_label_pic.label_pic(img_path = test_img, model_id = '7de5269e-d132-11e7-adf5-4ccc6abbb6f6', model_directory = 'cnn_keras/models')
-
-    print(pred+'+++'+class_dictionary)
 
 
 if __name__ == "__main__":
