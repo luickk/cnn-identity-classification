@@ -19,6 +19,15 @@ def label_pic(img_path, img_width, img_height, model_id, model_directory = 'cnn_
     class_dictionary = class_dictionary_file.read()
     return model.predict_classes(img_as_array), class_dictionary
 
+def label_pic_no_path(img, model_id, model_directory = 'cnn_keras/models'):
+    model = load_model(model_directory+'/'+model_id+'/'+'model.h5')
+    model.load_weights(model_directory+'/'+model_id+'/'+'model_weights.h5')
+
+    img_as_array = img_to_array(img)
+    class_dictionary_file = open(model_directory+'/'+model_id+'/'+'class_indices_file.txt', 'r')
+    class_dictionary = class_dictionary_file.read()
+    return model.predict_classes(img_as_array), class_dictionary
+
 def img_to_array(img):
     x = np.asarray(img, dtype=K.floatx())
     #expand dim for Keras net
