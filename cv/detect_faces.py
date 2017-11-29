@@ -15,9 +15,9 @@ def detect_faces(cascPath, img):
     flags = cv2.CASCADE_SCALE_IMAGE
     )
     for (x, y, w, h) in faces:
-        cropped = gray[y:y+h, x:x+w]
+        cropped = gray[y-200:y+h+400, x-200:x+w+400]
         faces_img_data.append(cropped)
-        faces_data.append([x, y, w, h])
+        faces_data.append([x-200, y-200, w+400, h+400])
 
     return faces_img_data, faces_data
 

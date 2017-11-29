@@ -28,7 +28,7 @@ def main():
 
     for data in range(len(faces_img_data_color)):
         pred, class_dictionary = keras_label_pic.label_pic_no_path(img = faces_img_data_color[data], model_id = model_uuid, model_directory = 'cnn_keras/models')
-        img_name = 'face {}, {}'.format('Face ' + str(pred),data)
+        img_name = 'face {}, {}, Classes: {}'.format('Face ' + str(pred),data,class_dictionary)
         cv2.namedWindow(img_name, cv2.WINDOW_NORMAL)
         cv2.resizeWindow(img_name, 600,600)
         cv2.imshow(img_name, faces_img_data_color[data])
