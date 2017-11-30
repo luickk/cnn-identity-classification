@@ -14,11 +14,11 @@ The python program detects and recognizes faces by using opencv to detect faces 
 
 #### <i class="icon-ccw"></i> Training
 
-	//TODO
+	> - python main.py -i <file name> -m train
 
 #### <i class="icon-right-big"></i> Testing
 
-	//TODO
+	> - python main.py -i <file name> -m label
 
 
 
