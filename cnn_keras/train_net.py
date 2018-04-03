@@ -15,7 +15,7 @@ class seq_net:
     def __init__(self):
         print('Initializing CNN')
 
-    def load_model(self, img_width = 150, img_height = 150, train_data_dir = 'img_data/train', validation_data_dir = 'img_data/validation', model_directory = 'cnn_keras/models'):
+    def load_model(self, img_width = 150, img_height = 150, train_data_dir = 'img_data/train', validation_data_dir = 'img_data/valid', model_directory = 'pretrained_models'):
         print('loading_imgs')
 
         # dimensions of our images.

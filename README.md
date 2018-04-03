@@ -1,8 +1,6 @@
 Face Recognition and detection
 ===================
 
-![alt text](https://s3.amazonaws.com/keras.io/img/keras-logo-2018-large-1200.png)
-
 The python program detects and recognizes faces by using opencv to detect faces and a in Keras built CNN to recognize them.
 
 ----------
@@ -13,12 +11,14 @@ The python program detects and recognizes faces by using opencv to detect faces 
 	> - Install Dependencies
 
 #### <i class="icon-ccw"></i> Training
+  Change training dir, default empty. Put your faces grouped in folders with appropriate class name here!<br>
+  Models are saved in **pretrained_models/** with model id as folder name <br>
 
-	> - python main.py -i <file name> -m train
+	> - python main.py -m train
 
 #### <i class="icon-right-big"></i> Testing
 
-	> - python main.py -i <file name> -m label
+	> - python main.py -u <model ID from trained model here> -i <file name> -m label
 
 
 
@@ -30,10 +30,11 @@ Dependencies
 > - cv2
 > - Pillow
 
-Contributing
+Example
 -------------------
-1: Fork it! <br>
-2: Create your feature branch: `git checkout -b my-new-feature` <br>
-3: Commit your changes: `git commit -am 'Add some feature'` <br>
-4: Push to the branch: `git push origin my-new-feature` <br>
-5: [Submit](https://help.github.com/articles/about-pull-requests/) a pull request <br>
+As you can see the face was recognized and assigned to the respective class.
+![img_classified](https://image.ibb.co/koLkbc/Unbenannt.png)
+
+Original:
+
+![img_org](http://cdn1.spiegel.de/images/image-1015094-860_poster_16x9-hejm-1015094.jpg)
