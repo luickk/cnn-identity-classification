@@ -33,8 +33,8 @@ Dependencies
 Example
 -------------------
 As you can see the face was recognized and assigned to the respective class.
-![img_classified](https://image.ibb.co/koLkbc/Unbenannt.png)
+![img_classified](media/2.png)
 
 Original:
 
-![img_org](http://cdn1.spiegel.de/images/image-1015094-860_poster_16x9-hejm-1015094.jpg)
+![img_org](media/1.jpg)
