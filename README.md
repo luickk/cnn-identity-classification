@@ -1,25 +1,36 @@
-Face Recognition and detection
+Face Classification
 ===================
 
-The python program detects and recognizes faces by using opencv to detect faces and a in Keras built CNN to recognize them.
+The project aims to recognizes and class faces in pictures by using opencv to detect faces and a keras CNN to recognize them.
 
 ----------
 
-#### <i class="icon-down-big"></i> Installation
+## Installation
 
-	> - Clone Repository
-	> - Install Dependencies
+	git clone https://github.com/luickk/cnn-face-recognition
 
-#### <i class="icon-ccw"></i> Training
-  Change training dir, default empty. Put your faces grouped in folders with appropriate class name here!<br>
-  Models are saved in **pretrained_models/** with model id as folder name <br>
+## Training
 
-	> - python main.py -m train
+1. Install listed dependiencies
 
-#### <i class="icon-right-big"></i> Testing
+2.
 
-	> - python main.py -u <model ID from trained model here> -i <file name> -m label
+	mkdir data
+	mkdir data/train
+	mkdir data/valid
+	mkdir data/trainedModels
 
+3. Add your data (data/class/imgFiles)
+
+4.	
+
+	python3 train.py
+
+## Testing
+
+Fill in trained model uid and test-img path beforehand
+
+	python predict.py
 
 
 Dependencies
@@ -30,9 +41,9 @@ Dependencies
 > - cv2
 > - Pillow
 
-Example
+Results
 -------------------
-As you can see the face was recognized and assigned to the respective class.
+
 ![img_classified](media/2.png)
 
 Original:
