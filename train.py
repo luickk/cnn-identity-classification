@@ -12,12 +12,11 @@ from PIL import Image as pil
 
 
 def main():
-    model, class_dictionary, model_uuid = train(img_width = 150, img_height = 150, train_data_dir = 'data/train', validation_data_dir = 'data/valid', model_directory = 'pretrained_models',
-                                                epochs = 50, batch_size = 16, nb_train_samples = 2000, nb_validation_samples = 800)
+    model, class_dictionary, model_uuid = initialTrain(img_width = 200, img_height = 200, train_data_dir = 'data/data/train', validation_data_dir = 'data/data/val', model_directory_path = 'pretrained_models',
+                                                epochs = 200, batch_size = 5, nb_train_samples = 19, nb_validation_samples = 5)
 
-
-def train(img_width = 150, img_height = 150, train_data_dir = 'data/train', validation_data_dir = 'data/valid', model_directory = 'pretrained_models',
-            epochs = 50, batch_size = 16, nb_train_samples = 2000, nb_validation_samples = 800):
+def initialTrain(img_width = 150, img_height = 150, train_data_dir = 'data/train', validation_data_dir = 'data/val', model_directory_path = 'data/trainedModels',
+            epochs = 50, batch_size = 5, nb_train_samples = 19, nb_validation_samples = 5):
 
     class_dictionary = None
 
@@ -25,30 +24,6 @@ def train(img_width = 150, img_height = 150, train_data_dir = 'data/train', vali
         input_shape = (3, img_width, img_height)
     else:
         input_shape = (img_width, img_height, 3)
-
-    model = Sequential()
-    model.add(Conv2D(32, (3, 3), input_shape=input_shape))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-
-    model.add(Conv2D(32, (3, 3)))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-
-    model.add(Conv2D(64, (3, 3)))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-
-    model.add(Flatten())
-    model.add(Dense(64))
-    model.add(Activation('relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(1))
-    model.add(Activation('sigmoid'))
-
-    model.compile(loss='binary_crossentropy',
-                    optimizer='rmsprop',
-                    metrics=['accuracy'])
 
     # this is the augmentation configuration we will use for training
     train_datagen = ImageDataGenerator(
@@ -69,6 +44,30 @@ def train(img_width = 150, img_height = 150, train_data_dir = 'data/train', vali
 
     class_dictionary = train_generator.class_indices
 
+    model = Sequential()
+    model.add(Conv2D(32, (3, 3), input_shape=input_shape))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+
+    model.add(Conv2D(32, (3, 3)))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+
+    model.add(Conv2D(64, (3, 3)))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+
+    model.add(Flatten())
+    model.add(Dense(64))
+    model.add(Activation('relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(len(class_dictionary)))
+    model.add(Activation('softmax'))
+
+    model.compile(loss='binary_crossentropy',
+                    optimizer='rmsprop',
+                    metrics=['accuracy'])
+
     validation_generator = test_datagen.flow_from_directory(
         validation_data_dir,
         target_size=(img_width, img_height),
@@ -85,10 +84,15 @@ def train(img_width = 150, img_height = 150, train_data_dir = 'data/train', vali
     if not os.path.exists(model_directory_path):
         os.makedirs(model_directory_path)
 
-    model.save_weights('data/trainedModels/model_'+str(uuid.uuid1())+'.h5')
+    model_uuid = str(uuid.uuid1())
+    model.save_weights('data/trainedModels/model_'+model_uuid+'.h5')
 
     class_indices_file = open(model_directory_path+'/class_indices_file.txt','w')
     class_indices_file.write(str(class_dictionary))
     class_indices_file.close()
 
     return model, class_dictionary, model_uuid
+
+
+if __name__ == "__main__":
+    main()

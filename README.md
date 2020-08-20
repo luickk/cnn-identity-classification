@@ -11,18 +11,16 @@ The project aims to recognizes and class faces in pictures by using opencv to de
 
 ## Training
 
-1. Install listed dependiencies
+Install listed dependiencies
 
-2.
 
 	mkdir data
 	mkdir data/train
 	mkdir data/valid
 	mkdir data/trainedModels
 
-3. Add your data (data/class/imgFiles)
+Add your data (data/class/imgFiles). Used dataset: https://www.kaggle.com/dansbecker/5-celebrity-faces-dataset
 
-4.	
 
 	python3 train.py
 

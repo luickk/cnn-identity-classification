@@ -18,7 +18,7 @@ def main():
 
     faces_img_data, faces_data = detect_faces.detect_faces(haar_cascade , img)
     faces_img_data_color = detect_faces.img_resize(detect_faces.map_to_color(img, faces_data), 150, 150)
-    
+
     for data in range(len(faces_img_data_color)):
         pred, class_dictionary = predict(img = faces_img_data_color[data], model_id = model_uuid, model_directory = 'pretrained_models')
         img_name = 'Face {}, Classes: {}'.format(str(pred),class_dictionary)
@@ -82,3 +82,8 @@ def img_resize(faces, x, y):
     for data in range(len(faces)):
         resize_face_img.append(cv2.resize(faces[data], (x, y)))
     return resize_face_img
+
+
+
+if __name__ == "__main__":
+    main()
