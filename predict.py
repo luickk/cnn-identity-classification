@@ -10,40 +10,52 @@ import cv2
 import numpy as np
 
 # Defineing haarcascade for face detection
-haar_cascade = 'cv/cascades/haarcascade_frontalface_default.xml'
+haar_cascade = 'data/haarcascade_frontalface_default.xml'
 
 def main():
-    img = cv2.imread("")
-    model_uuid = ""
+    input_shape = (150, 150, 3)
+    model_directory = 'data/trainedModels'
+    img = cv2.imread("data/data/val/elton_john/httpafilesbiographycomimageuploadcfillcssrgbdprgfacehqwMTEODAOTcxNjcMjczMjkzjpg.jpg")
+    model_uuid = "f8ee03b4-e39a-11ea-979f-faffc2003e2a"
 
-    faces_img_data, faces_data = detect_faces.detect_faces(haar_cascade , img)
-    faces_img_data_color = detect_faces.img_resize(detect_faces.map_to_color(img, faces_data), 150, 150)
-
+    faces_img_data, faces_data = detect_faces(haar_cascade , img)
+    faces_img_data_color = img_resize(map_to_color(img, faces_data), 150, 150)
     for data in range(len(faces_img_data_color)):
-        pred, class_dictionary = predict(img = faces_img_data_color[data], model_id = model_uuid, model_directory = 'pretrained_models')
+        pred, class_dictionary = predict(img = faces_img_data_color[data], model_id = model_uuid, model_directory = model_directory, input_shape=input_shape)
         img_name = 'Face {}, Classes: {}'.format(str(pred),class_dictionary)
         cv2.namedWindow(img_name, cv2.WINDOW_NORMAL)
         cv2.resizeWindow(img_name, 600,600)
         cv2.imshow(img_name, faces_img_data_color[data])
 
-def predictImg(img_path, img_width, img_height, model_id, model_directory = 'cnn_keras/models'):
-    model = load_model(model_directory+'/'+model_id+'/'+'model.h5')
-    model.load_weights(model_directory+'/'+model_id+'/'+'model_weights.h5')
 
-    img_pil = pil.open(img_path)
-    img_pil = img_pil.resize((img_width, img_height))
-    img_as_array = img_to_array(img_pil)
-    class_dictionary_file = open(model_directory+'/'+model_id+'/'+'class_indices_file.txt', 'r')
+def predict(img, model_id, model_directory, input_shape):
+    class_dictionary_file = open(model_directory+'/'+'class_indices_file.txt', 'r')
     class_dictionary = class_dictionary_file.read()
-    return model.predict_classes(img_as_array), class_dictionary
 
-def predict(img, model_id, model_directory = 'cnn_keras/models'):
-    model = load_model(model_directory+'/'+model_id+'/'+'model.h5')
-    model.load_weights(model_directory+'/'+model_id+'/'+'model_weights.h5')
+    model = Sequential()
+    model.add(Conv2D(32, (3, 3), input_shape=input_shape))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+
+    model.add(Conv2D(32, (3, 3)))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+
+    model.add(Conv2D(64, (3, 3)))
+    model.add(Activation('relu'))
+    model.add(MaxPooling2D(pool_size=(2, 2)))
+
+    model.add(Flatten())
+    model.add(Dense(64))
+    model.add(Activation('relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(len(class_dictionary)))
+    model.add(Activation('softmax'))
+
+    load_model(model_directory+'/model_'+model_id+'.h5')
 
     img_as_array = img_to_array(img)
-    class_dictionary_file = open(model_directory+'/'+model_id+'/'+'class_indices_file.txt', 'r')
-    class_dictionary = class_dictionary_file.read()
+
     return model.predict_classes(img_as_array), class_dictionary
 
 def img_to_array(img):
