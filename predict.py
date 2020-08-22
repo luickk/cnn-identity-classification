@@ -6,6 +6,7 @@ from keras.layers import Activation, Dropout, Flatten, Dense
 from keras import backend as K
 from PIL import Image as pil
 
+import json
 import cv2
 import numpy as np
 
@@ -15,48 +16,31 @@ haar_cascade = 'data/haarcascade_frontalface_default.xml'
 def main():
     input_shape = (150, 150, 3)
     model_directory = 'data/trainedModels'
-    img = cv2.imread("data/data/val/elton_john/httpafilesbiographycomimageuploadcfillcssrgbdprgfacehqwMTEODAOTcxNjcMjczMjkzjpg.jpg")
-    model_uuid = "f8ee03b4-e39a-11ea-979f-faffc2003e2a"
+    img = cv2.imread("data/Elton_John_test.jpeg")
+    model_uuid = "7bc08036-e45f-11ea-a7b5-faffc2003e2a"
 
     faces_img_data, faces_data = detect_faces(haar_cascade , img)
-    faces_img_data_color = img_resize(map_to_color(img, faces_data), 150, 150)
+    faces_img_data_color = img_resize(map_to_color(img, faces_data), 200, 200)
     for data in range(len(faces_img_data_color)):
         pred, class_dictionary = predict(img = faces_img_data_color[data], model_id = model_uuid, model_directory = model_directory, input_shape=input_shape)
+        print(class_dictionary)
+        print(pred)
         img_name = 'Face {}, Classes: {}'.format(str(pred),class_dictionary)
+
         cv2.namedWindow(img_name, cv2.WINDOW_NORMAL)
-        cv2.resizeWindow(img_name, 600,600)
         cv2.imshow(img_name, faces_img_data_color[data])
+        cv2.waitKey(0)
 
 
 def predict(img, model_id, model_directory, input_shape):
     class_dictionary_file = open(model_directory+'/'+'class_indices_file.txt', 'r')
     class_dictionary = class_dictionary_file.read()
 
-    model = Sequential()
-    model.add(Conv2D(32, (3, 3), input_shape=input_shape))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-
-    model.add(Conv2D(32, (3, 3)))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-
-    model.add(Conv2D(64, (3, 3)))
-    model.add(Activation('relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
-
-    model.add(Flatten())
-    model.add(Dense(64))
-    model.add(Activation('relu'))
-    model.add(Dropout(0.5))
-    model.add(Dense(len(class_dictionary)))
-    model.add(Activation('softmax'))
-
-    load_model(model_directory+'/model_'+model_id+'.h5')
+    model = load_model(model_directory+'/model_'+model_id+'.h5')
 
     img_as_array = img_to_array(img)
 
-    return model.predict_classes(img_as_array), class_dictionary
+    return model.predict(img_as_array), class_dictionary
 
 def img_to_array(img):
     x = np.asarray(img, dtype=K.floatx())

@@ -3,6 +3,7 @@ from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D
 from keras.layers import Activation, Dropout, Flatten, Dense
 from keras import backend as K
+import keras
 import uuid
 import numpy as np
 import os
@@ -13,7 +14,7 @@ from PIL import Image as pil
 
 def main():
     model, class_dictionary, model_uuid = initialTrain(img_width = 200, img_height = 200, train_data_dir = 'data/data/train', validation_data_dir = 'data/data/val', model_directory_path = 'data/trainedModels',
-                                                epochs = 200, batch_size = 5, nb_train_samples = 19, nb_validation_samples = 5)
+                                                epochs = 500, batch_size = 3, nb_train_samples = 19, nb_validation_samples = 5)
 
 def initialTrain(img_width = 150, img_height = 150, train_data_dir = 'data/train', validation_data_dir = 'data/val', model_directory_path = 'data/trainedModels',
             epochs = 50, batch_size = 5, nb_train_samples = 19, nb_validation_samples = 5):
@@ -61,11 +62,13 @@ def initialTrain(img_width = 150, img_height = 150, train_data_dir = 'data/train
     model.add(Dense(64))
     model.add(Activation('relu'))
     model.add(Dropout(0.5))
-    model.add(Dense(len(class_dictionary)))
+    model.add(Dense(len(class_dictionary.keys())))
     model.add(Activation('softmax'))
 
+    opt = keras.optimizers.Adam(learning_rate=0.0001)
+
     model.compile(loss='binary_crossentropy',
-                    optimizer='rmsprop',
+                    optimizer=opt,
                     metrics=['accuracy'])
 
     validation_generator = test_datagen.flow_from_directory(
@@ -85,6 +88,7 @@ def initialTrain(img_width = 150, img_height = 150, train_data_dir = 'data/train
         os.makedirs(model_directory_path)
 
     model_uuid = str(uuid.uuid1())
+    print("Model id: " + model_uuid)
     model.save(model_directory_path+'/model_'+model_uuid+'.h5')
 
     class_indices_file = open(model_directory_path+'/class_indices_file.txt','w')
