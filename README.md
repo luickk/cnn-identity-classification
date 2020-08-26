@@ -1,7 +1,7 @@
-Face Classification
+Face Identity Classification
 ===================
 
-The project aims to recognizes and class faces in pictures by using opencv to detect faces and a keras CNN to recognize them.
+The project aims to recognizes and identify faces in pictures by using opencv to detect faces and a keras CNN to identify them.
 
 ----------
 
@@ -13,14 +13,17 @@ The project aims to recognizes and class faces in pictures by using opencv to de
 
 Install listed dependiencies
 
+> - numpy
+> - Keras
+> - cv2
+> - Pillow
+
+Then create the data dir
 
 	mkdir data
-	mkdir data/train
-	mkdir data/valid
-	mkdir data/trainedModels
 
-Add your data (data/class/imgFiles). Used dataset: https://www.kaggle.com/dansbecker/5-celebrity-faces-dataset
-
+Add your data to `data/data/class/imgFiles` <br>
+Used dataset: https://www.kaggle.com/dansbecker/5-celebrity-faces-dataset
 
 	python3 train.py
 
@@ -30,14 +33,6 @@ Fill in trained model uid and test-img path beforehand
 
 	python predict.py
 
-
-Dependencies
--------------------
-
-> - numpy
-> - Keras
-> - cv2
-> - Pillow
 
 Results
 -------------------

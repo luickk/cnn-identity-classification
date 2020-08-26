@@ -79,7 +79,5 @@ def img_resize(faces, x, y):
         resize_face_img.append(cv2.resize(faces[data], (x, y)))
     return resize_face_img
 
-
-
 if __name__ == "__main__":
     main()
