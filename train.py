@@ -14,7 +14,7 @@ from PIL import Image as pil
 
 def main():
     model, class_dictionary, model_uuid = initialTrain(img_width = 200, img_height = 200, train_data_dir = 'data/data/train', validation_data_dir = 'data/data/val', model_directory_path = 'data/trainedModels',
-                                                epochs = 500, batch_size = 3, nb_train_samples = 19, nb_validation_samples = 5)
+                                                epochs = 200, batch_size = 3, nb_train_samples = 19, nb_validation_samples = 5)
 
 def initialTrain(img_width, img_height, train_data_dir, validation_data_dir, model_directory_path,
                 epochs, batch_size, nb_train_samples, nb_validation_samples):
